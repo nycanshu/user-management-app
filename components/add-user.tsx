@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { Button } from "./ui/button";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function AddUser() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setSuccess(false);
@@ -19,6 +20,21 @@ export default function AddUser() {
     }
     setSuccess(true);
     setEmail("");
+
+    // call the api to add the user
+    const response = await axiosInstance.post("/users", {
+      email: email,
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data);
+    if (response.status === 200) {
+      setSuccess(true);
+    } else {
+      setError("Failed to add user");
+    }
   }
 
   return (
