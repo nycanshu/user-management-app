@@ -1,9 +1,5 @@
-
 import "@/app/globals.css";
 import AddUser from "../../components/add-user";
-
-
-
 
 export default function AddUserPage() {
   return (

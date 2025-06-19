@@ -1,38 +1,18 @@
 "use client";
 
-
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { Button } from "../components/ui/button";
-import axiosInstance, { setAccessToken } from "../utils/axiosInstance";
 
 export default function Home() {
   const router = useRouter();
 
   const handleGetToken = async () => {
-    try {
-      const params = new URLSearchParams();
-      params.append("client_id", "admin-cli");
-      params.append("username", "admin");
-      params.append("password", "admin");
-      params.append("grant_type", "password");
-      const response = await axiosInstance.post(
-        "/token",
-        params,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log(response.data);
-
-      setAccessToken(response.data.access_token);
-      router.push("/add-user");
-      // alert("Token: " + response.data.access_token);
-    } catch (error: any) {
-      alert("Error: " + (error.response?.data?.error_description || error.message));
-    }
+    const response = await fetch("/api/token", {
+      method: "POST",
+    });
+    console.log(response.json());
+    router.push("/add-user");
   };
 
   return (
